@@ -1,16 +1,24 @@
-Next.js Project Setup Guide
-Requirements
+# Next.js Project Setup Guide
+
+## Requirements
+
 Before starting, make sure you have installed:
 
-Node.js (LTS version)
-npm
+- Node.js (LTS version)
+- npm
+
 Download Node.js here: https://nodejs.org
 
-Environment Variables
-Before running the project, create a .env file in the root folder of the project.
+---
+
+
+# Environment Variables
+
+Before running the project, create a `.env` file in the root folder of the project.
 
 Add the following variables:
 
+```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
 
@@ -34,83 +42,157 @@ NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
 
 INNGEST_EVENT_KEY=local
 INNGEST_DEV=1
-Important
+```
+
+---
+
+# Important
+
 After the first run of:
 
+```bash
 npx convex dev
+```
+
 Convex may generate new deployment values.
 
-You need to update these lines in the .env file with the newly generated values:
+You need to update these lines in the `.env` file with the newly generated values:
 
+```env
 CONVEX_DEPLOYMENT=...
 NEXT_PUBLIC_CONVEX_URL=...
-Use the values shown in the terminal after running npx convex dev.
+```
 
-Installation
+Use the values shown in the terminal after running `npx convex dev`.
+
+---
+
+
+# Installation
+
 Open the project folder in VS Code and run the following command in the terminal:
 
+```bash
 npm install
-This command installs all project dependencies from package.json.
+```
 
-Running the Project
+This command installs all project dependencies from `package.json`.
+
+---
+
+# Running the Project
+
 The project requires running 3 separate processes.
 
-1. Start Convex
+## 1. Start Convex
+
 Open the first terminal and run:
 
+```bash
 npx convex dev
+```
+
 This starts the Convex backend and database connection.
 
-Keep this terminal running.
+> Keep this terminal running.
 
-2. Start Next.js
+---
+
+## 2. Start Next.js
+
 Open a second terminal and run:
 
+```bash
 npm run dev
+```
+
 This starts the Next.js development server.
 
 After successful startup, the project will be available at:
 
+```text
 http://localhost:3000
-3. Start Inngest
+```
+
+---
+
+## 3. Start Inngest
+
 Open a third terminal and run:
 
+```bash
 npx --ignore-scripts=false inngest-cli@latest dev -u http://localhost:3000/api/inngest
+```
+
 This starts the Inngest development server for background jobs and event handling.
 
-Keep this terminal running.
+> Keep this terminal running.
 
-Final Structure
+---
+
+# Final Structure
+
 You should have 3 active terminals running:
 
-Terminal 1
+## Terminal 1
+
+```bash
 npx convex dev
-Terminal 2
+```
+
+## Terminal 2
+
+```bash
 npm run dev
-Terminal 3
+```
+
+## Terminal 3
+
+```bash
 npx --ignore-scripts=false inngest-cli@latest dev -u http://localhost:3000/api/inngest
-Stopping the Project
+```
+
+---
+
+# Stopping the Project
+
 To stop any running process, press:
 
+```text
 Ctrl + C
-Common Issues
-npm is not recognized
+```
+
+---
+
+# Common Issues
+
+## npm is not recognized
+
 Node.js is not installed correctly.
 
-Reinstall Node.js from: https://nodejs.org
+Reinstall Node.js from:
+https://nodejs.org
 
-Port 3000 is already in use
+---
+
+## Port 3000 is already in use
+
 Another application is using port 3000.
 
 Stop the conflicting process or run the app on another port.
 
-Reinstall Dependencies
+---
+
+# Reinstall Dependencies
+
 If dependencies are broken:
 
-Delete:
+1. Delete:
+   - `node_modules`
+   - `package-lock.json`
 
-node_modules
-package-lock.json
-Run:
+2. Run:
 
+```bash
 npm install
+```
