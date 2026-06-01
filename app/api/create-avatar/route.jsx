@@ -32,43 +32,43 @@ _id
 export async function POST(req) {
     const { avatarId, voiceUrl, videoRecordId } = await req.json();
 
-    // Get Avatar Generated ID
-    // const result = await axios.post('https://openapi.akool.com/api/open/v3/talkingavatar/create', {
-    //     "width": 3840,
-    //     "height": 2160,
-    //     "avatar_from": 2,
-    //     "elements": [
-    //         {
-    //             "type": "image",
-    //             "url": '#ffffff00',
-    //             "width": 780,
-    //             "height": 438,
-    //             "scale_x": 1,
-    //             "scale_y": 1,
-    //             "offset_x": 1920,
-    //             "offset_y": 1080
-    //         },
-    //         {
-    //             "type": "avatar",
-    //             "scale_x": 1,
-    //             "scale_y": 1,
-    //             "width": 1500,
-    //             "height": 1500,
-    //             "offset_x": 1920,
-    //             "offset_y": 1080,
-    //             avatar_id: avatarId
-    //         },
-    //         {
-    //             "type": "audio",
-    //             "url": voiceUrl
-    //         }
-    //     ],
-    // },
-    //     {
-    //         headers: {
-    //             Authorization: 'Bearer ' + process.env.AKOOL_API_TOKEN
-    //         }
-    //     })
+    //Get Avatar Generated ID
+    const result = await axios.post('https://openapi.akool.com/api/open/v3/talkingavatar/create', {
+        "width": 3840,
+        "height": 2160,
+        "avatar_from": 2,
+        "elements": [
+            {
+                "type": "image",
+                "url": '#ffffff00',
+                "width": 780,
+                "height": 438,
+                "scale_x": 1,
+                "scale_y": 1,
+                "offset_x": 1920,
+                "offset_y": 1080
+            },
+            {
+                "type": "avatar",
+                "scale_x": 1,
+                "scale_y": 1,
+                "width": 1500,
+                "height": 1500,
+                "offset_x": 1920,
+                "offset_y": 1080,
+                avatar_id: avatarId
+            },
+            {
+                "type": "audio",
+                "url": voiceUrl
+            }
+        ],
+    },
+        {
+            headers: {
+                Authorization: 'Bearer ' + process.env.AKOOL_API_TOKEN
+            }
+        })
 
 
     // const generatedAvatarId = result.data?.data?._id//'680add9783786a0476683730'//
