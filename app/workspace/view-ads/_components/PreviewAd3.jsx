@@ -1,56 +1,98 @@
 import React from 'react';
-import { AbsoluteFill, Audio, OffthreadVideo, Sequence, useVideoConfig } from 'remotion';
+import { AbsoluteFill, OffthreadVideo, Sequence, useVideoConfig } from 'remotion';
 import { AnimatedImage } from './PreviewAd1';
-
 
 function PreviewAd3({ videoInfo }) {
     const { durationInFrames } = useVideoConfig();
-    const eachImageDuration = Math.floor(durationInFrames / videoInfo?.assets?.length);
-    const directions = ['left', 'zoom', 'right', 'zoom', 'left']; // define directions per image
+
+    const avatarUrl = videoInfo?.avatarUrl;
+    const hasAvatarUrl = typeof avatarUrl === 'string' && avatarUrl.length > 0;
+
+    const assets = Array.isArray(videoInfo?.assets)
+        ? videoInfo.assets.filter((item) => typeof item === 'string' && item.length > 0)
+        : [];
+
+    const eachImageDuration = assets.length > 0
+        ? Math.floor(durationInFrames / assets.length)
+        : durationInFrames;
+
+    const directions = ['left', 'zoom', 'right', 'zoom', 'left'];
 
     return (
         <AbsoluteFill style={{ backgroundColor: "white", position: 'relative' }}>
-            {/* 🖼️ Full screen images */}
-            {videoInfo?.assets.map((src, index) => (
-                <Sequence
-                    key={index}
-                    from={index * eachImageDuration}
-                    durationInFrames={eachImageDuration}
+            {/* Full screen images */}
+            {assets.length > 0 ? (
+                assets.map((src, index) => (
+                    <Sequence
+                        key={index}
+                        from={index * eachImageDuration}
+                        durationInFrames={eachImageDuration}
+                    >
+                        <AnimatedImage
+                            src={src}
+                            direction={directions[index % directions.length]}
+                        />
+                    </Sequence>
+                ))
+            ) : (
+                <div
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 32,
+                        color: '#555',
+                        textAlign: 'center',
+                        padding: 40,
+                    }}
                 >
-                    <AnimatedImage
-                        src={src}
-                        direction={directions[index % directions.length]}
-                    />
-                </Sequence>
-            ))}
+                    Product images are not available
+                </div>
+            )}
 
-            {/* 🎥 Tiny video always playing at bottom-right */}
+            {/* Small avatar video at bottom-right */}
             <div
                 style={{
                     position: 'absolute',
                     bottom: 20,
                     right: 20,
-                    width: 450, // or any size you want
+                    width: 450,
                     height: 350,
                     borderRadius: 12,
                     overflow: 'hidden',
                     boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                    backgroundColor: '#f5f5f5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
-                {videoInfo && <OffthreadVideo
-                    src={videoInfo?.avatarUrl}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        transform: 'scale(2)', // 👈 apply zoom
-                        transformOrigin: 'center center', // 👈 zoom from center
-                    }}
-                />}
+                {hasAvatarUrl ? (
+                    <OffthreadVideo
+                        src={avatarUrl}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                            transform: 'scale(2)',
+                            transformOrigin: 'center center',
+                        }}
+                    />
+                ) : (
+                    <div
+                        style={{
+                            fontSize: 24,
+                            color: '#555',
+                            textAlign: 'center',
+                            padding: 20,
+                        }}
+                    >
+                        Avatar video is still generating...
+                    </div>
+                )}
             </div>
-
-            {/* 🔊 Audio throughout */}
-            {/* <Audio src={audioSrc} /> */}
         </AbsoluteFill>
     );
 }
